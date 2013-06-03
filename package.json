@@ -1,0 +1,29 @@
+{
+    "name": "WebRapJS",
+    "version": "0.1.0",
+    "description": "A webinterface to control 3D printers.",
+    "author": {
+        "name": "Christian Heller",
+        "email": "mail@christian-heller.net"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cheller/WebRapJS"
+    },
+    "dependencies": {
+        "serialport": "1.1.x",
+        "socket.io": "0.9.x",
+        "express": "3.2.x",
+        "async": "0.2.x",
+        "winston": "0.7.x"
+    },
+    "engines": {
+        "node": "*"
+    },
+    "readmeFilename": "README.md",
+    "bugs": {
+        "url": "https://github.com/cheller/WebRapJS/issues"
+    },
+    "_id": "WebRapJS@0.1.0",
+    "_from": "WebRapJS@"
+}
