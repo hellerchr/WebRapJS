@@ -55,12 +55,12 @@ function Printer(port, baudrate) {
             }
             else if (printCommands.length > 0) {
 
-                var cmd = printCommands.shift();
+                var cmd = "N" + currentLine++ + ' ' + printCommands[currentLine - 1];
                 var checkSum = 0;
                 for (var i = 0; cmd.charAt(i) != '*' && i < cmd.length; i++)
                     checkSum = checkSum ^ cmd.charCodeAt(i);
 
-                sendSerial("N" + currentLine++ + ' ' + '*' + checkSum);
+                sendSerial(cmd + '*' + checkSum);
 
                 //check if print is finished
                 if (printCommands.length == 0 && printStatus == PRINT_STATUS.PRINTING)
@@ -288,15 +288,15 @@ function Printer(port, baudrate) {
         var parsedCommands = parseGCODE(file);
 
         logger.info("starting to print file: " + file);
-        logger.debug("length of gcode " + file);
 
         if (parsedCommands && parsedCommands.length > 0) {
 
             updatePrintStatus(PRINT_STATUS.PRINTING);
             printCommands = parsedCommands;
             linesOfFile = parsedCommands.length;
+            logger.debug("lines of parsed gcode " + linesOfFile);
             printStartTime = new Date();
-            currentLine = 0;
+            currentLine = 1;
 
             //trigger first "ok"
             sendSerial("M105");
