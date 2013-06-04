@@ -87,8 +87,9 @@ function Printer(port, baudrate) {
                     var port = ports[i];
                     availablePorts.push(port.comName);
 
+                    var info = port.manufacturer || port.pnpId;
                     //arduino must be the printer ;-)
-                    if (port.manufacturer.indexOf("Arduino") != -1)
+                    if (info.indexOf("Arduino") != -1)
                         detectedPort = port.comName;
                 }
 
@@ -115,7 +116,7 @@ function Printer(port, baudrate) {
         if (statusCb) {
             var currentStatus = {
                 printStatus: printStatus,
-                temperature: lastTemperature,
+                temperature: lastTemperature
             };
 
             if (printStatus == PRINT_STATUS.PRINTING) {
@@ -297,14 +298,14 @@ function Printer(port, baudrate) {
     }
 
     function parseGCODE(file) {
-        var printCommands = fs.readFileSync(file, "utf8").trim().split("\n");
+        var printCommands = fs.readFileSync(file, "utf8").split("\n");
         logger.debug("GCODE before parsing: " + printCommands.join(","));
 
         //exclude comments
         var i = printCommands.length;
         while (i--) {
-            var line = printCommands[i];
-            if (line.indexOf(";") == "0")
+            var line = printCommands[i].trim();
+            if (line == '' || line.indexOf(";") == "0")
                 printCommands.splice(i, 1);
             else if (line.indexOf(";") != -1)
                 printCommands[i] = line.substring(0, line.indexOf(";")).trim();
