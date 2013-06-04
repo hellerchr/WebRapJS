@@ -1,6 +1,6 @@
 var settings = {
     port: 'auto',
-    baudrate: 115200
+    baudrate: 230400
 }
 
 module.exports = settings;
