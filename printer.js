@@ -31,6 +31,7 @@ function Printer(port, baudrate) {
     //print file
     var linesOfFile;
     var file;
+    var currentLine;
 
 
     //command queues
@@ -53,7 +54,13 @@ function Printer(port, baudrate) {
                 sendSerial(prioritizedCommands.shift());
             }
             else if (printCommands.length > 0) {
-                sendSerial(printCommands.shift());
+
+                var cmd = printCommands.shift();
+                var checkSum = 0;
+                for (var i = 0; cmd.charAt(i) != '*' && i < cmd.length; i++)
+                    checkSum = checkSum ^ cmd.charCodeAt(i);
+
+                sendSerial("N" + currentLine++ + ' ' + '*' + checkSum);
 
                 //check if print is finished
                 if (printCommands.length == 0 && printStatus == PRINT_STATUS.PRINTING)
@@ -289,6 +296,7 @@ function Printer(port, baudrate) {
             printCommands = parsedCommands;
             linesOfFile = parsedCommands.length;
             printStartTime = new Date();
+            currentLine = 0;
 
             //trigger first "ok"
             sendSerial("M105");
